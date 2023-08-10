@@ -16,7 +16,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class AccountController {
 
-    private final AccountRepository accountRepository;
+
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     public AccountController(AccountRepository accountRepository) {

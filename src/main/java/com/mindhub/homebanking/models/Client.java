@@ -64,7 +64,7 @@ public class Client {
         return accounts;
     } //GETTER DE LA COLECCION DE ACCOUNTS PERTENECIENTES AL CLIENT
 
-    public void addAccount(Account account) {
+    public void addAccount(Account account) { //METODO PARA AGREGAR LAS CUENTAS AL OBJETO CLIENTE
         account.setClient(this);
         this.accounts.add(account);
     }
