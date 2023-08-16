@@ -1,14 +1,10 @@
 package com.mindhub.homebanking;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.models.Transaction;
-import com.mindhub.homebanking.models.TransactionType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.models.*;
+import com.mindhub.homebanking.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,25 +18,58 @@ public class HomebankingApplication {
 	}
 
 
+	//Utilizo la interfaz CommandLineRunner para ejecutar este codigo al iniciar la app
+
+	//En el CommandLineRunner debes crear 3 préstamos y guardarlos en la base de datos:
+	//Mantengo los nombres en ingles
+	//Hipotecario: monto máximo 500.000, cuotas 12,24,36,48,60. --> mortgage
+	//Personal: monto máximo 100.000, cuotas 6,12,24 --> personal
+	//Automotriz: monto máximo 300.000, cuotas 6,12,24,36 --> automotive
+
+	//Tengo que generar 3 clients y 3 accounts al menos para asignar un tipo de prestamo a cadar uno
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository) {
 		return (args) -> {
 
 			//REORGANIZO PARA SEGUIR UN FLUJO DE CREACION, ASIGNACION Y GUARDADO
 			//CREACION----------------------------------------------------------------
 
 			//CREO CLIENTE
-			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");//genero user
+			Client client1 = new Client("Client1", "Client1", "melba1@mindhub.com");//genero user1
+//			Client client2 = new Client("Client2", "Client2", "melba2@mindhub.com");//genero user2
+//			Client client3 = new Client("Client3", "Client3", "melba3@mindhub.com");//genero user3
+
+
 
 			//CREO CUENTAS
 			Account account1 = new Account("VIN001",LocalDate.now(), 5000.0);//cuenta1
 			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), 7500.0);//cuenta2
+			Account account3 = new Account("VIN003", LocalDate.now(), 15000);//cuenta3
+
+
 
 			//CREO TRANSACCIONES
 			Transaction transaction1  = new Transaction(TransactionType.CREDIT, 2000.0, "deposit", LocalDateTime.now());
 			Transaction transaction2  = new Transaction(TransactionType.CREDIT, 1000.0, "deposit", LocalDateTime.now());
 			Transaction transaction3  = new Transaction(TransactionType.DEBIT, 500.0, "extraction", LocalDateTime.now());
 			Transaction transaction4  = new Transaction(TransactionType.DEBIT, 300.0, "extraction", LocalDateTime.now());
+			Transaction transaction5  = new Transaction(TransactionType.CREDIT, 800.0, "deposit", LocalDateTime.now());
+			Transaction transaction6 = new Transaction(TransactionType.DEBIT, 950.0, "extraction", LocalDateTime.now());
+
+			//CREO LOS ENTIDADES DE CLASE LOAN PARA LOS PRESTAMOS
+			//(String name, Double maxAmount, List<Integer> payments) lleva ese constructor
+			//EMPLEO LO APRENDIDO DE ENUMS PARA INDICAR EL TIPO DE CREDITO
+			Loan loanMortgage = new Loan(LoanType.MORTGAGE.name(), 500000.0, List.of(12,24,36,48,60));
+			Loan loanPersonal = new Loan(LoanType.PERSONAL.name(), 100000.0, List.of(6,12,24));
+			Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36));
+
+			// Paso el codigo aca porque no me funciona al final. REVISAR LUEGO!!!
+
+
+
+
+
+
 
 
 			//ASIGNACION----------------------------------------------------------------
@@ -51,21 +80,77 @@ public class HomebankingApplication {
 			account2.addTransaction(transaction2);
 			account1.addTransaction(transaction3);
 			account2.addTransaction(transaction4);
+			account3.addTransaction(transaction5);
+			account3.addTransaction(transaction6);
+			//LUEGO LO HAGO TODO DE CERO Y ORDENADO
+			//RECORDAR QUE ESTOS CLIENT, ACCOUNTS, ETC, SOLO SE GENERAN POR PRUEBA. LUEGO SE VAN A GENERAR DESDE EL FRONT
+
 
 			//CUENTAS A CLIENTES
 			client1.addAccount(account1); //ASOCIO LAS CUENTAS AL CLIENTE
 			client1.addAccount(account2);
+			client1.addAccount(account3);
+
+
+
+			//GENERO LAS ENTIDADES DE TIPO CLIENTLOAN
+			ClientLoan clientLoan1 = new ClientLoan(400000.0, 60, client1, loanMortgage);
+			ClientLoan clientLoan2 = new ClientLoan(50000.0, 12, client1, loanPersonal);
+			ClientLoan clientLoan3 = new ClientLoan(100000.0, 24, client1, loanAutomotive);
+
+			//RELACIONO
+			loanMortgage.addClientLoan(clientLoan1);
+			loanPersonal.addClientLoan(clientLoan2);
+			loanAutomotive.addClientLoan(clientLoan3);
+
+
+
+			//Vinculo cada prestamo a un cliente mediante el metodo addClientLoan de la clase Client
+			client1.addClientLoan(clientLoan1);
+			client1.addClientLoan(clientLoan2);
+			client1.addClientLoan(clientLoan3);
+//			client2.addClientLoan(clientLoan2);
+//			client3.addClientLoan(clientLoan3);
+
+
+
+
+
+
+
 
 			//UNA VEZ CREADAS LAS CUENTAS, CLIENTES Y TRASACCIONES, Y POSTERIORMENTE ASIGNADAS, USO REPOSITORY PARA GUARDAR
-			clientRepository.save(client1); //GUARDO EL CLIENT GENERADO
+
+			clientRepository.save(client1); //GUARDO LOS CLIENT
+//			clientRepository.save(client2);
+//			clientRepository.save(client3);
 
 			accountRepository.save(account1); //GUARDO LAS CUENTAS YA ASIGNADAS AL CLIENT
 			accountRepository.save(account2);
+			accountRepository.save(account3);
+
+
 
 			transactionRepository.save(transaction1); //GUARDO LAS TRANSACCIONES EN EL TRANSACTION REPOSITORY
 			transactionRepository.save(transaction2);
 			transactionRepository.save(transaction3);
 			transactionRepository.save(transaction4);
+			transactionRepository.save(transaction5);
+			transactionRepository.save(transaction6);
+
+			//No era eso. No me esta generando 3 client, sino 1. SEGUIR REVISANDO!!!
+			// LAS GUARDO ANTES DE ASIGNARLAS A LAS CUENTAS
+			loanRepository.save(loanMortgage);
+			loanRepository.save(loanPersonal);
+			loanRepository.save(loanAutomotive);
+
+
+			//GUARDO LOS PRESTAMOS EN EL REPOSITORY QUE EXTIENDE JPA
+			clientLoanRepository.save(clientLoan1);
+			clientLoanRepository.save(clientLoan2);
+			clientLoanRepository.save(clientLoan3);
+
+
 
 
 

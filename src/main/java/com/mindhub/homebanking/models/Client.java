@@ -3,6 +3,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Client {
@@ -15,6 +16,9 @@ public class Client {
 
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER) //VINCULACION CON LA TABLA
     Set<Account> accounts = new HashSet<>(); // COLECCION PARA CONTENER LAS CUENTAS QUE PERTENECEN A UN CLIENT
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER) //VINCULACION CON LA TABLA
+    private Set<ClientLoan> clientLoans = new HashSet<>(); // COLECCION PARA CONTENER LOS PRESTAMOS QUE PERTENECEN A UN CLIENT
 
     public Client() { //CONSTRUCT
     }
@@ -69,4 +73,21 @@ public class Client {
         this.accounts.add(account);
     }
     //SETTER PARA VINCULAR ACCOUNTS A UN CLIENT
+
+    public Set<Loan> getLoans(){
+        return clientLoans.stream().map(clientLoan -> clientLoan.getLoan()).collect(Collectors.toSet());
+    }
+
+
+    //Genero una coleccion para gestionar los prestamos al cliente
+    public Set<ClientLoan> getClientLoans() {
+        return clientLoans;
+    }
+
+    //Genero un metodo para agregar prestamos al Set ClientLoan del cliente
+    public void addClientLoan(ClientLoan clientLoan){
+        clientLoan.setClient(this);
+        this.clientLoans.add(clientLoan);
+    }
+
 }
