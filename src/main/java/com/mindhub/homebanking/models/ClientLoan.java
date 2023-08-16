@@ -1,4 +1,5 @@
 package com.mindhub.homebanking.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
@@ -9,7 +10,7 @@ public class ClientLoan {
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
     private Double amount;
-    private int payment;
+    private int payment; //La cantidad de cuotas. ESTOY TENIENDO PROBLEMAS PARA VISUALIZARLO.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private Client client;
@@ -41,12 +42,16 @@ public class ClientLoan {
     public void setPayment(int payment) {
         this.payment = payment;
     }
+
+    @JsonIgnore
     public Client getClient() {
         return client;
     }
     public void setClient(Client client) {
         this.client = client;
     }
+
+    @JsonIgnore
     public Loan getLoan() {return loan;}
     public void setLoan(Loan loan) {
         this.loan = loan;

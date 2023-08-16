@@ -35,8 +35,8 @@ public class HomebankingApplication {
 			//CREACION----------------------------------------------------------------
 
 			//CREO CLIENTE
-			Client client1 = new Client("Client1", "Client1", "melba1@mindhub.com");//genero user1
-//			Client client2 = new Client("Client2", "Client2", "melba2@mindhub.com");//genero user2
+			Client client1 = new Client("Melba", "Morel", "melba1@mindhub.com");//genero user1
+			Client client2 = new Client("Client2", "Client2", "melba2@mindhub.com");//genero user2
 //			Client client3 = new Client("Client3", "Client3", "melba3@mindhub.com");//genero user3
 
 
@@ -59,9 +59,10 @@ public class HomebankingApplication {
 			//CREO LOS ENTIDADES DE CLASE LOAN PARA LOS PRESTAMOS
 			//(String name, Double maxAmount, List<Integer> payments) lleva ese constructor
 			//EMPLEO LO APRENDIDO DE ENUMS PARA INDICAR EL TIPO DE CREDITO
-			Loan loanMortgage = new Loan(LoanType.MORTGAGE.name(), 500000.0, List.of(12,24,36,48,60));
-			Loan loanPersonal = new Loan(LoanType.PERSONAL.name(), 100000.0, List.of(6,12,24));
-			Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36));
+			Loan loanMortgage = new Loan(LoanType.MORTGAGE.name(), 500000.0, List.of(12,24,36,48,60)); //Hasta 60 cuotas
+			Loan loanPersonal1 = new Loan(LoanType.PERSONAL.name(), 50000.0, List.of(6,12,24)); //24 cuotas
+			Loan loanPersonal2 = new Loan(LoanType.PERSONAL.name(), 100000.0, List.of(6,12,24)); //24 cuotas
+			Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36)); //36 cuotas
 
 			// Paso el codigo aca porque no me funciona al final. REVISAR LUEGO!!!
 
@@ -89,26 +90,29 @@ public class HomebankingApplication {
 			//CUENTAS A CLIENTES
 			client1.addAccount(account1); //ASOCIO LAS CUENTAS AL CLIENTE
 			client1.addAccount(account2);
-			client1.addAccount(account3);
+			client2.addAccount(account3);
 
 
 
 			//GENERO LAS ENTIDADES DE TIPO CLIENTLOAN
 			ClientLoan clientLoan1 = new ClientLoan(400000.0, 60, client1, loanMortgage);
-			ClientLoan clientLoan2 = new ClientLoan(50000.0, 12, client1, loanPersonal);
-			ClientLoan clientLoan3 = new ClientLoan(100000.0, 24, client1, loanAutomotive);
+			ClientLoan clientLoan2 = new ClientLoan(50000.0, 12, client1, loanPersonal1);
+			ClientLoan clientLoan3 = new ClientLoan(100000.0, 24, client2, loanPersonal2);
+			ClientLoan clientLoan4 = new ClientLoan(200000.0, 36, client2, loanAutomotive);
 
 			//RELACIONO
 			loanMortgage.addClientLoan(clientLoan1);
-			loanPersonal.addClientLoan(clientLoan2);
-			loanAutomotive.addClientLoan(clientLoan3);
+			loanPersonal1.addClientLoan(clientLoan2);
+			loanPersonal2.addClientLoan(clientLoan3);
+			loanAutomotive.addClientLoan(clientLoan4);
 
 
 
 			//Vinculo cada prestamo a un cliente mediante el metodo addClientLoan de la clase Client
 			client1.addClientLoan(clientLoan1);
 			client1.addClientLoan(clientLoan2);
-			client1.addClientLoan(clientLoan3);
+			client2.addClientLoan(clientLoan3);
+			client2.addClientLoan(clientLoan4);
 //			client2.addClientLoan(clientLoan2);
 //			client3.addClientLoan(clientLoan3);
 
@@ -122,7 +126,7 @@ public class HomebankingApplication {
 			//UNA VEZ CREADAS LAS CUENTAS, CLIENTES Y TRASACCIONES, Y POSTERIORMENTE ASIGNADAS, USO REPOSITORY PARA GUARDAR
 
 			clientRepository.save(client1); //GUARDO LOS CLIENT
-//			clientRepository.save(client2);
+			clientRepository.save(client2);
 //			clientRepository.save(client3);
 
 			accountRepository.save(account1); //GUARDO LAS CUENTAS YA ASIGNADAS AL CLIENT
@@ -141,7 +145,8 @@ public class HomebankingApplication {
 			//No era eso. No me esta generando 3 client, sino 1. SEGUIR REVISANDO!!!
 			// LAS GUARDO ANTES DE ASIGNARLAS A LAS CUENTAS
 			loanRepository.save(loanMortgage);
-			loanRepository.save(loanPersonal);
+			loanRepository.save(loanPersonal1);
+			loanRepository.save(loanPersonal2);
 			loanRepository.save(loanAutomotive);
 
 
@@ -149,6 +154,8 @@ public class HomebankingApplication {
 			clientLoanRepository.save(clientLoan1);
 			clientLoanRepository.save(clientLoan2);
 			clientLoanRepository.save(clientLoan3);
+			clientLoanRepository.save(clientLoan4);
+
 
 
 

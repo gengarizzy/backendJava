@@ -19,7 +19,7 @@ public class Loan {
     private Double maxAmount;
     @ElementCollection
     @Column(name = "payments")
-    private List<Integer> payments = new ArrayList<>();
+    private List<Integer> payments = new ArrayList<>(); //Las cuotas que puede aceptar
     @OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
     private Set<ClientLoan> clientLoans = new HashSet<>();
 

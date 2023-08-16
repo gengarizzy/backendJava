@@ -17,11 +17,18 @@ public class ClientDTO {
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.accounts = client.getAccounts().stream().map(AccountDTO::new).collect(toSet());
+        this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(toSet());
 
     }
 
     public Set<AccountDTO> getAccounts() { //COLECCION DE CUENTAS
         return accounts;
+    }
+
+    Set<ClientLoanDTO> loans = new HashSet<>(); //COLECCION DE PRESTAMOS
+
+    public Set<ClientLoanDTO> getLoans(){ //GETTER DE PRESTAMOS
+        return loans;
     }
 
     //GETTERS AND SETTERS
