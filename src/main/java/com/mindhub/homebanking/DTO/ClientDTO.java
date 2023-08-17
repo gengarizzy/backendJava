@@ -9,27 +9,22 @@ public class ClientDTO {
     private String firstName;
     private String lastName;
     private String email;
-    Set<AccountDTO> accounts = new HashSet<>();
+    private Set<AccountDTO> accounts; //ATENCION. ACA TENIA UN ERROR EN EL CLIENTDTO, QUE NO MOSTRABA CUENTAS, PRESTAMOS Y TARJETAS
+    private Set<ClientLoanDTO> loans;
+    private Set<CardDTO> cards;
 
-    public ClientDTO(Client client) {
+
+    public ClientDTO(Client client) { //CONSTRUCTOR. ACTUALIZAR AL AGREGAR FUNCIONES
         this.id = client.getId();
         this.firstName = client.getFirstName();
         this.lastName = client.getLastName();
         this.email = client.getEmail();
         this.accounts = client.getAccounts().stream().map(AccountDTO::new).collect(toSet());
         this.loans = client.getClientLoans().stream().map(ClientLoanDTO::new).collect(toSet());
+        this.cards = client.getCards().stream().map(CardDTO::new).collect(toSet());
 
     }
 
-    public Set<AccountDTO> getAccounts() { //COLECCION DE CUENTAS
-        return accounts;
-    }
-
-    Set<ClientLoanDTO> loans = new HashSet<>(); //COLECCION DE PRESTAMOS
-
-    public Set<ClientLoanDTO> getLoans(){ //GETTER DE PRESTAMOS
-        return loans;
-    }
 
     //GETTERS AND SETTERS
     public long getId() {
@@ -46,4 +41,18 @@ public class ClientDTO {
     }
 
 
+    //GETTERS DE LAS FUNCIONES COMO CUENTAS, TARJETAS, ETC
+
+
+    public Set<AccountDTO> getAccounts() {
+        return accounts;
+    }
+
+    public Set<ClientLoanDTO> getLoans() {
+        return loans;
+    }
+
+    public Set<CardDTO> getCards() {
+        return cards;
+    }
 }

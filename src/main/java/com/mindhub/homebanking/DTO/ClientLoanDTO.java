@@ -5,7 +5,7 @@ public class ClientLoanDTO {
     private Long id;
     private Long loanId;
     private String name;
-    private int payment;
+    private Integer payment;
     private Double amount;
 
     public ClientLoanDTO(){}

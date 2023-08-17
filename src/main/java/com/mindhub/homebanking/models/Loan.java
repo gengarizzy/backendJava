@@ -59,7 +59,7 @@ public class Loan {
         this.payments = payments;
     }
     public Set<Client> getClients(){
-        return clientLoans.stream().map(clientLoan -> clientLoan.getClient()).collect(toSet());
+        return clientLoans.stream().map(ClientLoan::getClient).collect(toSet());
     }
     public Set<ClientLoan> getClientLoans(){
         return clientLoans;

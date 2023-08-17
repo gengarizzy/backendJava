@@ -20,6 +20,11 @@ public class Client {
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER) //VINCULACION CON LA TABLA
     private Set<ClientLoan> clientLoans = new HashSet<>(); // COLECCION PARA CONTENER LOS PRESTAMOS QUE PERTENECEN A UN CLIENT
 
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER) //VINCULACION CON LA TABLA
+    private Set<Card> cards = new HashSet<>(); //COLECCION PARA CONTENER LAS TARJETAS QUE PERTENECEN A UN CLIENT
+
+
     public Client() { //CONSTRUCT
     }
 
@@ -35,11 +40,6 @@ public class Client {
     public long getId() {
         return id;
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -88,6 +88,20 @@ public class Client {
     public void addClientLoan(ClientLoan clientLoan){
         clientLoan.setClient(this);
         this.clientLoans.add(clientLoan);
+    }
+
+
+    public Set<Card> getCards() { //GETTERS Y SETTERS PARA LAS TARJETAS DEL CLIENTE
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
+    }
+
+    public void addCard(Card card){ //SETTER PARA AGREGAR TARJETAS AL CLIENTE
+        card.setClient(this);
+        cards.add(card);
     }
 
 }

@@ -28,7 +28,9 @@ public class HomebankingApplication {
 
 	//Tengo que generar 3 clients y 3 accounts al menos para asignar un tipo de prestamo a cadar uno
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository,
+									  TransactionRepository transactionRepository, LoanRepository loanRepository,
+									  ClientLoanRepository clientLoanRepository, CardRepository cardRepository) {
 		return (args) -> {
 
 			//REORGANIZO PARA SEGUIR UN FLUJO DE CREACION, ASIGNACION Y GUARDADO
@@ -65,10 +67,6 @@ public class HomebankingApplication {
 			Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36)); //36 cuotas
 
 			// Paso el codigo aca porque no me funciona al final. REVISAR LUEGO!!!
-
-
-
-
 
 
 
@@ -159,6 +157,28 @@ public class HomebankingApplication {
 
 
 
+			//tarjetas
+
+			Card cardGold = new Card(client1.getFirstName() +" " + client1.getLastName(),
+					CardType.DEBIT, CardColor.GOLD, "123456789012345", 123,
+					LocalDate.now(), LocalDate.now().plusYears(5));
+
+			Card cardTitanium = new Card(client1.getFirstName() +" " + client1.getLastName(),
+					CardType.CREDIT, CardColor.TITANIUM, "1234512345123450", 321,
+					LocalDate.now(), LocalDate.now().plusYears(5));
+
+			Card cardSilver = new Card(client2.getFirstName() +" " + client2.getLastName(),
+					CardType.CREDIT, CardColor.SILVER, "1234512345000000", 111,
+					LocalDate.now(), LocalDate.now().plusYears(2));
+
+
+			client1.addCard(cardGold);
+			client1.addCard(cardTitanium);
+			client2.addCard(cardSilver);
+
+			cardRepository.save(cardGold);
+			cardRepository.save(cardTitanium);
+			cardRepository.save(cardSilver);
 
 
 
