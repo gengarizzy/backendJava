@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Random;
 
 @Entity
 public class Card {
@@ -16,7 +17,7 @@ public class Card {
     private  CardType type;
     private CardColor color;
     private String number;
-    private int cvv;
+    private String cvv;
     private LocalDate fromDate;
 
     private LocalDate thruDate;
@@ -32,15 +33,52 @@ public class Card {
     private Account account;
 
 
-    public Card() {
+    @PrePersist
+    public void generateAccountCvvAndNumber() {
+        if (cvv == null && number == null) {
+            Random random = new Random();
+
+            // Genera un número aleatorio entre 0 y 999 para el CVV
+            int randomCvv = random.nextInt(1000);
+            cvv = String.format("%03d", randomCvv);
+
+            // Genera un número aleatorio de 16 dígitos para el número de cuenta
+            long randomNumber = generateRandomNumber(16);
+            number = String.format("%016d", randomNumber);
+        }
     }
 
-    public Card(String cardholder, CardType type, CardColor color, String number, int cvv, LocalDate fromDate, LocalDate thruDate) {
+    private long generateRandomNumber(int digits) {
+        Random random = new Random();
+        long min = (long) Math.pow(10, digits - 1);
+        long max = (long) Math.pow(10, digits) - 1;
+        return min + random.nextLong() % (max - min + 1);
+    }
+
+    // Resto de tu clase y métodos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public Card() {
+    }
+
+    public Card(String cardholder, CardType type, CardColor color,   LocalDate fromDate, LocalDate thruDate) {
         this.cardholder = cardholder;
         this.type = type;
         this.color = color;
-        this.number = number;
-        this.cvv = cvv;
         this.fromDate = fromDate;
         this.thruDate = thruDate;
     }
@@ -81,13 +119,10 @@ public class Card {
         this.number = number;
     }
 
-    public int getCvv() {
+    public String getCvv() {
         return cvv;
     }
 
-    public void setCvv(int cvv) {
-        this.cvv = cvv;
-    }
 
     public LocalDate getFromDate() {
         return fromDate;

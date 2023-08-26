@@ -45,25 +45,26 @@ public class HomebankingApplication {
 			//CREACION----------------------------------------------------------------
 
 			//CREO CLIENTE
+			//Hice modificaciones para generar el numero de cuenta automaticamente de manera incremental
 			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"),RoleType.CLIENT);//genero user1
 			Client client2 = new Client("Client2", "Client2", "client2@mindhub.com", passwordEncoder.encode("password"),RoleType.CLIENT);//genero user2
 			Client admin = new Client("admin","admin", "admin@admin.com", passwordEncoder.encode("admin"),RoleType.ADMIN);
 
 			//CREO CUENTAS
-			Account account1 = new Account("VIN001",LocalDate.now(), 5000.0);//cuenta1
-			Account account2 = new Account("VIN002", LocalDate.now().plusDays(1), 7500.0);//cuenta2
-			Account account3 = new Account("VIN003", LocalDate.now(), 15000);//cuenta3
-			Account account4 = new Account("ADMIN", LocalDate.now(), 1500000);//cuenta admin
+			Account account1 = new Account(LocalDate.now(), 5000.0);//cuenta1
+			Account account2 = new Account( LocalDate.now().plusDays(1), 7500.0);//cuenta2
+			Account account3 = new Account( LocalDate.now(), 15000);//cuenta3
+			Account account4 = new Account(LocalDate.now(), 1500000);//cuenta admin
 
 //CREO TRANSACCIONES
-			Transaction transaction1  = new Transaction(TransactionType.CREDIT, 2000.0, "deposit", LocalDateTime.now());
-			Transaction transaction2  = new Transaction(TransactionType.CREDIT, 1000.0, "deposit", LocalDateTime.now());
-			Transaction transaction3  = new Transaction(TransactionType.DEBIT, 500.0, "extraction", LocalDateTime.now());
-			Transaction transaction4  = new Transaction(TransactionType.DEBIT, 300.0, "extraction", LocalDateTime.now());
-			Transaction transaction5  = new Transaction(TransactionType.CREDIT, 800.0, "deposit", LocalDateTime.now());
-			Transaction transaction6 = new Transaction(TransactionType.DEBIT, 950.0, "extraction", LocalDateTime.now());
-			Transaction transaction7 = new Transaction(TransactionType.DEBIT, 9500.0, "extraction", LocalDateTime.now());
-			Transaction transaction8 = new Transaction(TransactionType.DEBIT, 9500.0, "deposit", LocalDateTime.now());
+			Transaction transaction1  = new Transaction(TransactionType.CREDIT, 2000.0, "DEPOSIT", LocalDateTime.now());
+			Transaction transaction2  = new Transaction(TransactionType.CREDIT, 1000.0, "DEPOSIT", LocalDateTime.now());
+			Transaction transaction3  = new Transaction(TransactionType.DEBIT, 500.0, "EXTRACTION", LocalDateTime.now());
+			Transaction transaction4  = new Transaction(TransactionType.DEBIT, 300.0, "EXTRACTION", LocalDateTime.now());
+			Transaction transaction5  = new Transaction(TransactionType.CREDIT, 800.0, "DEPOSIT", LocalDateTime.now());
+			Transaction transaction6 = new Transaction(TransactionType.DEBIT, 950.0, "EXTRACTION", LocalDateTime.now());
+			Transaction transaction7 = new Transaction(TransactionType.DEBIT, 9500.0, "EXTRACTION", LocalDateTime.now());
+			Transaction transaction8 = new Transaction(TransactionType.DEBIT, 9500.0, "DEPOSIT", LocalDateTime.now());
 
 
 
@@ -179,19 +180,19 @@ public class HomebankingApplication {
 
 
 			Card cardGold = new Card(client1.getFirstName() +" " + client1.getLastName(),
-					CardType.DEBIT, CardColor.GOLD, "123456789012345", 123,
+					CardType.DEBIT, CardColor.GOLD,
 					LocalDate.now(), LocalDate.now().plusYears(5));
 
 			Card cardTitanium = new Card(client1.getFirstName() +" " + client1.getLastName(),
-					CardType.CREDIT, CardColor.TITANIUM, "1234512345123450", 321,
+					CardType.CREDIT, CardColor.TITANIUM,
 					LocalDate.now(), LocalDate.now().plusYears(5));
 
 			Card cardSilver = new Card(client2.getFirstName() +" " + client2.getLastName(),
-					CardType.CREDIT, CardColor.SILVER, "1234512345000000", 111,
+					CardType.CREDIT, CardColor.SILVER,
 					LocalDate.now(), LocalDate.now().plusYears(2));
 
 			Card cardSilverAdmin = new Card(admin.getFirstName() +" " + admin.getLastName(),
-					CardType.CREDIT, CardColor.SILVER, "123ADMIN456", 111,
+					CardType.CREDIT, CardColor.SILVER,
 					LocalDate.now(), LocalDate.now().plusYears(2));
 
 

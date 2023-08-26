@@ -14,6 +14,8 @@ public class Account {
     private String number;
     private LocalDate creationDate;
     private double balance;
+
+    private static int accountCounter = 1; //Inicio mi contador para asignar un numero de cuenta automatico
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client client;
@@ -23,12 +25,29 @@ public class Account {
 
     public Account() {
     } //CONSTRUCTOR VACIO
-    public Account(String number, LocalDate creationDate, double balance) {
-        this.number = number;
+
+
+    //UPTADE: Ya no le paso mas el numero de cuenta como parametro al constructor
+    //ya que quiero generarlo de manera automatica e incremental
+    public Account( LocalDate creationDate, double balance) {
         this.creationDate = creationDate;
         this.balance = balance;
 
     } //CONSTRUCTOR CONSIDERANDO EL NUMERO DE CUENTA, FECHA DE CREACION Y EL SALDO
+
+
+
+    //Mediante el metodo generateAccountNumber(), genero un numero de cuenta de manera automatica
+    //si number==null (lo que sucede, ya que no le asigno un number mediante un constructor)
+    //toma un numero a partir de un contador, el cual se actualiza al crear la cuenta, y utiliza
+    //el prefijo VIN-
+    @PrePersist
+    public void generateAccountNumber() {
+        if (number == null) {
+            number = "VIN-" + String.format("%06d", accountCounter);
+            accountCounter++;
+        }
+    }
 
 
 
@@ -61,7 +80,17 @@ public class Account {
         this.client = client;
     }
 
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
     //METODOS DE TRANSACCIONES
     public Set<Transaction> getTransactions() {
@@ -76,6 +105,9 @@ public class Account {
     public void setTransactions(Set<Transaction> transactions) {
         this.transactions = transactions;
     }
+
+
+
 
     //TO STRING
 

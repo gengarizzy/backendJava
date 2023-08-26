@@ -22,8 +22,10 @@ class WebAuthorization extends WebSecurityConfigurerAdapter {
                 //ADMIN PUEDE ENTRAR A /ADMIN y REST
                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/rest/**").hasAuthority("ADMIN")
-                .antMatchers("/api/accounts").hasAuthority("ADMIN")
+                .antMatchers("/api/clients").hasAuthority("ADMIN")
                 .antMatchers("/api/login").hasAuthority("ADMIN")
+                .antMatchers("/api/clients").hasAuthority("ADMIN")
+
 
 
                 //CLIENT PUEDE ENTRAR A LO DEMAS
