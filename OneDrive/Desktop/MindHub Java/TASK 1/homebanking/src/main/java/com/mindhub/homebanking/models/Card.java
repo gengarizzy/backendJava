@@ -13,7 +13,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private Long id; //Long Wrapper
-    private String cardholder;
+    private String cardHolder;
     private  CardType type;
     private CardColor color;
     private String number;
@@ -42,17 +42,27 @@ public class Card {
             int randomCvv = random.nextInt(1000);
             cvv = String.format("%03d", randomCvv);
 
-            // Genera un número aleatorio de 16 dígitos para el número de cuenta
-            long randomNumber = generateRandomNumber(16);
-            number = String.format("%016d", randomNumber);
+            // Genera un número aleatorio de 16 dígitos para el número de cuenta, hecho
+            //con el prefijo 8666 y 3 bloques de 4 numeros aleatorio
+            long randomNumber1 = generateRandomNumber(4);
+            long randomNumber2 = generateRandomNumber(4);
+            long randomNumber3 = generateRandomNumber(4);
+            number = "8666" + " " + String.format("%04d", randomNumber1) + " " +
+                    String.format("%04d", randomNumber2)+ " " +
+                    String.format("%04d", randomNumber3);
+            //Uso el prefijo 8666 para referirme a Mindhub, y le agrego 3 bloques de 4 numeros aleatorios separados
+            //por un espacio
+
         }
     }
 
+    //Genero una funcion para generar numeros POSITIVOS aleatorios, la que uso para generar el numero de tarjeta
+    //Hago uso de Math.abs() para que los numeros aleatorios generados sean positivos
     private long generateRandomNumber(int digits) {
         Random random = new Random();
         long min = (long) Math.pow(10, digits - 1);
         long max = (long) Math.pow(10, digits) - 1;
-        return min + random.nextLong() % (max - min + 1);
+        return Math.abs(min + random.nextLong() % (max - min + 1));
     }
 
     // Resto de tu clase y métodos
@@ -75,8 +85,8 @@ public class Card {
 public Card() {
     }
 
-    public Card(String cardholder, CardType type, CardColor color,   LocalDate fromDate, LocalDate thruDate) {
-        this.cardholder = cardholder;
+    public Card(String cardHolder, CardType type, CardColor color,   LocalDate fromDate, LocalDate thruDate) {
+        this.cardHolder = cardHolder;
         this.type = type;
         this.color = color;
         this.fromDate = fromDate;
@@ -88,11 +98,11 @@ public Card() {
     }
 
     public String getCardholder() {
-        return cardholder;
+        return cardHolder;
     }
 
-    public void setCardholder(String cardholder) {
-        this.cardholder = cardholder;
+    public void setCardholder(String cardHolder) {
+        this.cardHolder = cardHolder;
     }
 
     public CardType getType() {

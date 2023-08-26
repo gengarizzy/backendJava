@@ -13,7 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toSet;
 
 @RequestMapping("/api")
@@ -29,7 +32,7 @@ public class ClientController {
     @Autowired
     private AccountRepository accountRepository;
 
-    @RequestMapping("/clients")
+    @GetMapping("/clients")
     public Set<ClientDTO> getClientsDTO(){
         return clientRepository.findAll()
                 .stream()
@@ -37,7 +40,7 @@ public class ClientController {
                 .collect(toSet());
     }
 
-    @RequestMapping("clients/{id}")
+    @GetMapping("clients/{id}")
     public ClientDTO getClientDTO(@PathVariable Long id){
         return clientRepository.findById(id)
                 .map(ClientDTO::new)
@@ -46,16 +49,19 @@ public class ClientController {
     }
 
 
-    @PostMapping("/clients")
-    public ResponseEntity<Object> register
-            ( //SOLICITO TENER firstName, lastName, email y password, para poder crear la cuenta
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String email,
-            @RequestParam String password){
+    @GetMapping("/clients/current")
+    public ClientDTO getAuthenticatedClient(Authentication authentication){
+        return new ClientDTO(clientRepository.findByEmail(authentication.getName()));
+
+    }
 
 
-        //VERIFICACIONES DE CAMPOS VALIDOS Y EMAIL SIN REGISTRAR PREVIAMENTE
+
+    @RequestMapping(path = "/clients", method = RequestMethod.POST)
+    public ResponseEntity<Object> register(
+            @RequestParam String firstName, @RequestParam String lastName,
+            @RequestParam String email, @RequestParam String password){
+
         if (firstName.isBlank()) {
             return new ResponseEntity<>("the firstName is missing", HttpStatus.FORBIDDEN);
         }
@@ -73,31 +79,22 @@ public class ClientController {
             return new ResponseEntity<>("Email already in use", HttpStatus.FORBIDDEN);
         }
 
-        //Si no se cumple ninguno de los if anteriores, es decir, todos los datos son correctos y no
-        //se repite el meil, se procede a crear un nuevo Client, al que se le asocian los datos introducidos
-        //y un rol de CLIENT automatico. Quiero solo poder crear CLIENT desde index
-
         Client client =  clientRepository.save(new Client(firstName,
-                lastName,
-                email,
-                passwordEncoder.encode(password),
-                RoleType.CLIENT));
+                lastName, email,passwordEncoder.encode(password),RoleType.CLIENT));
 
+        List<String> accountNumbersExisting = accountRepository.findAll()
+                .stream()
+                .map(Account::getNumber)
+                .collect(Collectors.toList());
 
+        Account accountNew = new Account( LocalDate.now(), 0);
 
-        //Al crear el cliente, tambien quiero generarle una cuenta con la fecha del dia y balance 0
-        Account accountNew = new Account(LocalDate.now(), 0); //Instancio una nueva cuenta
-        accountRepository.save(accountNew); // Guardo la cuenta
-        client.addAccount(accountNew); // La vinculo con el cliente
-        clientRepository.save(client); // Una vez que guarde y vincule la cuenta al cliente, guardo el cliente
-        return new ResponseEntity<>("Client/Account created",HttpStatus.CREATED);
+        accountRepository.save(accountNew);
+        client.addAccount(accountNew);
+        clientRepository.save(client);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/clients/current")
-    public ClientDTO getAuthenticatedClient(Authentication authentication){
-        return new ClientDTO(clientRepository.findByEmail(authentication.getName()));
-
-    }
 
 
 

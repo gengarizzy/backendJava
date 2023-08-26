@@ -11,7 +11,14 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "native", strategy = "native")
     private long id; //GENERO LA PRIMARY KEY
-    private String firstName, lastName, email, password; //GENERO LOS DATOS DE TIPO STRING
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private String password;
+
 
     private RoleType roleType;
 

@@ -34,24 +34,28 @@ public class CardController {
                                               Authentication authentication ) {
 
 
+
+        //Obtengo el cliente mediante findByEmail del repository
         Client client = clientRepository.findByEmail(authentication.getName());
+
 
         //Reviso si el cliente no tiene ya asociada una tarjeta de cierto color y tipo
         if (cardRepository.findByClientAndColorAndType(client, cardColor, cardType) != null) {
             return new ResponseEntity<>("Only one type/color per client", HttpStatus.FORBIDDEN);
         }
 
-        String cardHolder = client.getFirstName() + " " + client.getLastName();
 
-
-        Card cardNew = new Card(cardHolder,
+ String cardholder = client.getFirstName() + " " + client.getLastName();
+    //--PROBLEMA-- Quiero obtener nombre y apellido del client, pero no estoy pudiendo
+        Card newCard = new Card(
+                cardholder,
                 cardType,
                 cardColor,
                 LocalDate.now(),
                 LocalDate.now().plusYears(5));
 
-        client.addCard(cardNew);
-        cardRepository.save(cardNew);
+        client.addCard(newCard);
+        cardRepository.save(newCard);
 
 
         return new ResponseEntity<>("New card created", HttpStatus.CREATED);

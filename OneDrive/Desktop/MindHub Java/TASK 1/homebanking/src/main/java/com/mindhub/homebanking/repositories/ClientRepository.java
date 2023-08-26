@@ -2,7 +2,6 @@ package com.mindhub.homebanking.repositories;
 import com.mindhub.homebanking.models.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import java.util.Optional;
 
 
@@ -11,8 +10,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
     //Agrego metodo para encontrar mediante email
-    public Client findByEmail(String email);
-    public Optional<Client> findById(Long id);
+    Client findByEmail(String email);
 
 
 

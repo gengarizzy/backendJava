@@ -50,6 +50,7 @@ public class HomebankingApplication {
 			Client client2 = new Client("Client2", "Client2", "client2@mindhub.com", passwordEncoder.encode("password"),RoleType.CLIENT);//genero user2
 			Client admin = new Client("admin","admin", "admin@admin.com", passwordEncoder.encode("admin"),RoleType.ADMIN);
 
+
 			//CREO CUENTAS
 			Account account1 = new Account(LocalDate.now(), 5000.0);//cuenta1
 			Account account2 = new Account( LocalDate.now().plusDays(1), 7500.0);//cuenta2

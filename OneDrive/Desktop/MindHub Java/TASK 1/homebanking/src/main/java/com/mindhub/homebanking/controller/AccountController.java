@@ -1,6 +1,5 @@
 package com.mindhub.homebanking.controller;
 import com.mindhub.homebanking.DTO.AccountDTO;
-import com.mindhub.homebanking.DTO.ClientDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
@@ -26,7 +25,7 @@ public class AccountController {
     private ClientRepository clientRepository;
 
     @GetMapping("/accounts")
-    public Set<AccountDTO> getAccountsDTO() {
+    public Set<AccountDTO> getAccountDTO() {
         return accountRepository.findAll()
                 .stream()
                 .map(AccountDTO::new)
@@ -71,7 +70,7 @@ public class AccountController {
 
 
         //Instancio el objeto accountNew de la clase Account, con los parametros definidos arriba
-        Account accountNew = new Account( newAccountDate, newAccountBalance);
+        Account accountNew = new Account(newAccountDate, newAccountBalance);
         //No necesito asignar un numero de cuenta, ya que mi clase Account lo hace automaticamente de manera
         //incremental, utilizando un contador
 

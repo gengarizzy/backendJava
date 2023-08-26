@@ -12,7 +12,7 @@ public class Account {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
     private String number;
-    private LocalDate creationDate;
+    private LocalDate date;
     private double balance;
 
     private static int accountCounter = 1; //Inicio mi contador para asignar un numero de cuenta automatico
@@ -29,8 +29,8 @@ public class Account {
 
     //UPTADE: Ya no le paso mas el numero de cuenta como parametro al constructor
     //ya que quiero generarlo de manera automatica e incremental
-    public Account( LocalDate creationDate, double balance) {
-        this.creationDate = creationDate;
+    public Account( LocalDate date, double balance) {
+        this.date = date;
         this.balance = balance;
 
     } //CONSTRUCTOR CONSIDERANDO EL NUMERO DE CUENTA, FECHA DE CREACION Y EL SALDO
@@ -67,7 +67,7 @@ public class Account {
         return number;
     }
     public LocalDate getCreationDate() {
-        return creationDate;
+        return date;
     }
     public double getBalance() {
         return balance;
@@ -84,8 +84,8 @@ public class Account {
         this.number = number;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(LocalDate date) {
+        this.date = date;
     }
 
     public void setBalance(double balance) {
@@ -117,7 +117,7 @@ public class Account {
         return "Account{" +
                 "id=" + id +
                 ", number='" + number + '\'' +
-                ", creationDate=" + creationDate +
+                ", date=" + date +
                 ", balance=" + balance +
                 ", client=" + client +
                 ", transactions=" + transactions +

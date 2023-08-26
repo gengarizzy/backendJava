@@ -36,7 +36,7 @@ Vue.createApp({
             axios.post('/api/clients', `firstName=${this.firstName}&lastName=${this.lastName}&email=${this.email}&password=${this.password}`, config)
                 .then(() => { this.signIn(event) })
                 .catch(() => {
-                    this.errorMsg = "Sign up failed, email already in use or blank input"
+                    this.errorMsg = "Sign up failed, check the information"
                     this.errorToats.show();
                 })
         },
@@ -51,4 +51,3 @@ Vue.createApp({
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
     }
 }).mount('#app')
-
