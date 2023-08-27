@@ -80,7 +80,10 @@ public class ClientController {
         }
 
         Client client =  clientRepository.save(new Client(firstName,
-                lastName, email,passwordEncoder.encode(password),RoleType.CLIENT));
+                lastName, email,passwordEncoder.encode(password)));
+
+
+
 
         List<String> accountNumbersExisting = accountRepository.findAll()
                 .stream()
@@ -92,7 +95,9 @@ public class ClientController {
         accountRepository.save(accountNew);
         client.addAccount(accountNew);
         clientRepository.save(client);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);//cliente creado
+
+
     }
 
 

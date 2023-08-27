@@ -36,7 +36,7 @@ Vue.createApp({
             axios.post('/api/clients', `firstName=${this.firstName}&lastName=${this.lastName}&email=${this.email}&password=${this.password}`, config)
                 .then(() => { this.signIn(event) })
                 .catch(() => {
-                    this.errorMsg = "Sign up failed, check the information"
+                    this.errorMsg = "Sign up failed, email already in use or blank input"
                     this.errorToats.show();
                 })
         },

@@ -39,12 +39,11 @@ public class Client {
 
 
   //CONSTRUCT CON LOS PARAMETROS
-    public Client(String firstName, String lastName, String email, String password, RoleType roleType) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.roleType = roleType;
     } //UN CLIENTE SE CONSTRUYE CON ESOS 3 PARAMETROS. LA ID ES AUTOMATICA
 
 

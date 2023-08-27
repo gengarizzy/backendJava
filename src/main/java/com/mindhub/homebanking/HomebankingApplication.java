@@ -46,9 +46,9 @@ public class HomebankingApplication {
 
 			//CREO CLIENTE
 			//Hice modificaciones para generar el numero de cuenta automaticamente de manera incremental
-			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"),RoleType.CLIENT);//genero user1
-			Client client2 = new Client("Client2", "Client2", "client2@mindhub.com", passwordEncoder.encode("password"),RoleType.CLIENT);//genero user2
-			Client admin = new Client("admin","admin", "admin@admin.com", passwordEncoder.encode("admin"),RoleType.ADMIN);
+			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("melba"));//genero user1
+			Client client2 = new Client("Client2", "Client2", "client2@mindhub.com", passwordEncoder.encode("password"));//genero user2
+			Client admin = new Client("admin","admin", "admin@admin.com", passwordEncoder.encode("admin"));
 
 
 			//CREO CUENTAS
