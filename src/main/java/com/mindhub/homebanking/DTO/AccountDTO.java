@@ -16,7 +16,7 @@ public class AccountDTO {
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.number = account.getNumber();
-        this.date = account.getCreationDate();
+        this.date = account.getDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(Collectors.toSet());
     }
@@ -29,7 +29,7 @@ public class AccountDTO {
     public String getNumber() {
         return number;
     }
-    public LocalDate getCreationDate() {
+    public LocalDate getDate() {
         return date;
     }
     public double getBalance() {

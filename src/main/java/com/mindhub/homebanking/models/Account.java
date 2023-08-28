@@ -66,7 +66,7 @@ public class Account {
     public String getNumber() {
         return number;
     }
-    public LocalDate getCreationDate() {
+    public LocalDate getDate() {
         return date;
     }
     public double getBalance() {
@@ -84,7 +84,7 @@ public class Account {
         this.number = number;
     }
 
-    public void setCreationDate(LocalDate date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
