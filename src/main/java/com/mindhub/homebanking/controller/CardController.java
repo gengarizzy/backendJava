@@ -45,14 +45,16 @@ public class CardController {
         }
 
 
- String cardholder = client.getFirstName() + " " + client.getLastName();
+ String cardHolder = client.getFirstName() + " " + client.getLastName();
     //--PROBLEMA-- Quiero obtener nombre y apellido del client, pero no estoy pudiendo
         Card newCard = new Card(
-                cardholder,
+                cardHolder,
                 cardType,
                 cardColor,
                 LocalDate.now(),
                 LocalDate.now().plusYears(5));
+
+
 
         client.addCard(newCard);
         cardRepository.save(newCard);

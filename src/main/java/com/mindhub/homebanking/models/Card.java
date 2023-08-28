@@ -10,11 +10,11 @@ import java.util.Random;
 public class Card {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private Long id; //Long Wrapper
     private String cardHolder;
-    private  CardType type;
+    private CardType type;
     private CardColor color;
     private String number;
     private String cvv;
@@ -97,11 +97,11 @@ public Card() {
         return id;
     }
 
-    public String getCardholder() {
+    public String getCardHolder() {
         return cardHolder;
     }
 
-    public void setCardholder(String cardHolder) {
+    public void setCardHolder(String cardHolder) {
         this.cardHolder = cardHolder;
     }
 
