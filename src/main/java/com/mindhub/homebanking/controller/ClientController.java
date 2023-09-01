@@ -61,6 +61,24 @@
                 @RequestParam String firstName, @RequestParam String lastName,
                 @RequestParam String email, @RequestParam String password){
 
+            if (firstName.isBlank()) {
+                return new ResponseEntity<>("the firstName is missing", HttpStatus.FORBIDDEN);
+            }
+            if (lastName.isBlank()) {
+                return new ResponseEntity<>("the lastName is missing", HttpStatus.FORBIDDEN);
+            }
+            if (email.isBlank()) {
+                return new ResponseEntity<>("the email is missing", HttpStatus.FORBIDDEN);
+            }
+            if (password.isBlank()) {
+                return new ResponseEntity<>("the password is missing", HttpStatus.FORBIDDEN);
+            }
+
+            if(clientRepository.findByEmail(email) != null){
+                return new ResponseEntity<>("Email already in use", HttpStatus.FORBIDDEN);
+            }
+
+
             return clientService.registerNewClient(firstName, lastName, email, password);
 
         }
