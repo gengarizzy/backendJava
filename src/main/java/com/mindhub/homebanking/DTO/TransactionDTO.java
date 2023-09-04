@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 
 public class TransactionDTO {
 
-//VARIABLES
 
+
+
+    //VARIABLES
     private Long id;
     private TransactionType type;
     private Double amount;

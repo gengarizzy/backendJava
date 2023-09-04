@@ -21,19 +21,33 @@ class WebAuthorization extends WebSecurityConfigurerAdapter {
 
                 //ADMIN PUEDE ENTRAR A /ADMIN y REST
 
+
+
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/rest/**").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST,"/api/login").permitAll()
-
-
 
 
                 //CLIENT PUEDE ENTRAR A LO DEMAS
-
                 .antMatchers("/web/accounts.html").hasAnyAuthority("CLIENT", "ADMIN") //doy permiso a estos endpoints
                 .antMatchers("/web/account.html").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers("/web/cards.html").hasAnyAuthority("CLIENT", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/clients/**").hasAnyAuthority("CLIENT", "ADMIN")
+
+
+                .antMatchers(HttpMethod.GET, "/api/clients/current/**").hasAnyAuthority("CLIENT", "ADMIN")
+
+                //TENGO UN PROBLEMA ACA. EL METODO getData de transfers.js falla al solicitar los datos del usuario
+                //axios.get("/api/clients/current/accounts")
+//
+//              .antMatchers(HttpMethod.GET,"/api/clients/current/accounts").hasAnyAuthority("CLIENT", "ADMIN")
+
+                .antMatchers(HttpMethod.POST,"/api/transactions").hasAnyAuthority("CLIENT","ADMIN")
+
+
+
+
+                .antMatchers(HttpMethod.POST,"/api/login").permitAll() //No se necesita permiso para intentar loggearse
+
+
 
 
 

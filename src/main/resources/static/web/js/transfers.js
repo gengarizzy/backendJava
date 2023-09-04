@@ -22,7 +22,7 @@ Vue.createApp({
                 })
                 .catch((error) => {
                     console.log(error);
-                    this.errorMsg = "Error getting data";
+                    this.errorMsg = "Error getting data (getData function)";
                     this.errorToats.show();
                 })
         },
