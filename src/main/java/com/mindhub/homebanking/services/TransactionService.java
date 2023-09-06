@@ -10,11 +10,11 @@ import javax.persistence.EntityNotFoundException;
 
 public interface TransactionService {
 
-    ResponseEntity<Object> createNewTransaction(Authentication authentication,
-                                                Double amount,
-                                                String description,
-                                                String fromAccountNumber,
-                                                String toAccountNumber);
+//    ResponseEntity<Object> createNewTransaction(Authentication authentication,
+//                                                Double amount,
+//                                                String description,
+//                                                String fromAccountNumber,
+//                                                String toAccountNumber);
 
     void saveNewTransaction(Transaction transaction);
 

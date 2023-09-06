@@ -8,6 +8,7 @@ import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,47 +26,18 @@ import static java.util.stream.Collectors.toSet;
 public class CardServiceImpl implements CardService {
 
     @Autowired
-    CardRepository cardRepository;
-
-    @Autowired
-    ClientRepository clientRepository;
-
-
+    private CardRepository cardRepository;
 
 
 
     @Override
-    public ResponseEntity<Object> createCards(@RequestParam CardColor cardColor,
-                                              @RequestParam CardType cardType,
-                                              Authentication authentication ) {
+    public void saveNewCard(Card card) {
+        cardRepository.save(card);
+    }
 
-        //Obtengo el cliente mediante findByEmail del repository
-        Client client = clientRepository.findByEmail(authentication.getName());
-
-
-        //Reviso si el cliente no tiene ya asociada una tarjeta de cierto color y tipo
-        if (cardRepository.findByClientAndColorAndType(client, cardColor, cardType) != null) {
-            return new ResponseEntity<>("Only one type/color per client", HttpStatus.FORBIDDEN);
-        }
-
-
-        String cardHolder = client.getFirstName() + " " + client.getLastName();
-        //--PROBLEMA-- Quiero obtener nombre y apellido del client, pero no estoy pudiendo
-        Card newCard = new Card(
-                cardHolder,
-                cardType,
-                cardColor,
-                LocalDate.now(),
-                LocalDate.now().plusYears(5));
-
-
-        client.addCard(newCard);
-        cardRepository.save(newCard);
-
-
-        return new ResponseEntity<>("New card created", HttpStatus.CREATED);
-
-
+    @Override
+    public boolean existsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType) {
+        return cardRepository.existsByClientAndColorAndType(client, cardColor, cardType);
     }
 
 

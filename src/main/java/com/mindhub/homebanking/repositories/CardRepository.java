@@ -11,6 +11,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
 
 //Creo un metodo para obtener el cliente, color y tipo de la tarjeta, ya que solo puede tener 1 de cada 1
-    String findByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType);
+//    boolean cardExistsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType);
+
+    //SOLUCION: tenia que usar existsBy debido a una convencion en Spring
+    boolean existsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType);
+
 
 }

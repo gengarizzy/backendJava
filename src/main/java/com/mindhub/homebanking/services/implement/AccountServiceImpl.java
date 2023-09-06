@@ -34,6 +34,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account findByNumberAndClient(String number, Client client) {
+        return accountRepository.findByNumberAndClient(number, client);
+    }
+
+    @Override
     public ResponseEntity<AccountDTO> getAccountById(Long id) {
         Optional<Account> account = accountRepository.findById(id);
         return account.map(AccountDTO::new).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());

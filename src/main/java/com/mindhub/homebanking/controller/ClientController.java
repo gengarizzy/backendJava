@@ -27,13 +27,8 @@ public class ClientController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
     private ClientService clientService;
 
-    @Autowired
-    private AccountRepository accountRepository;
 
     @GetMapping("/clients")
     public Set<ClientDTO> getAllClientsDTO(){
