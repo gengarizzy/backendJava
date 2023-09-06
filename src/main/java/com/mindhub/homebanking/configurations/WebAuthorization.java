@@ -31,6 +31,10 @@ class WebAuthorization extends WebSecurityConfigurerAdapter {
                 .antMatchers("/web/accounts.html").hasAnyAuthority("CLIENT", "ADMIN") //doy permiso a estos endpoints
                 .antMatchers("/web/account.html").hasAnyAuthority("CLIENT", "ADMIN")
                 .antMatchers("/web/cards.html").hasAnyAuthority("CLIENT", "ADMIN")
+                .antMatchers("/web/cards.html").hasAnyAuthority("CLIENT", "ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/loans").hasAnyAuthority("CLIENT", "ADMIN")
+
+
 
 
                 .antMatchers(HttpMethod.GET, "/api/clients/current/**").hasAnyAuthority("CLIENT", "ADMIN")

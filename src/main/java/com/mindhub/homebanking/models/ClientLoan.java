@@ -63,4 +63,16 @@ public class ClientLoan {
     public void addLoan(Loan loan) {
         this.loan = loan;
     }
+
+
+    @Override
+    public String toString() {
+        return "ClientLoan{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", payments=" + payments +
+                ", client=" + client +
+                ", loan=" + loan +
+                '}';
+    }
 }

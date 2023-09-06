@@ -40,15 +40,16 @@ public class CardServiceImpl implements CardService {
                                               Authentication authentication ) {
 
         //Obtengo el cliente mediante findByEmail del repository
-        Client authorizedClient = clientRepository.findByEmail(authentication.getName());
+        Client client = clientRepository.findByEmail(authentication.getName());
 
 
         //Reviso si el cliente no tiene ya asociada una tarjeta de cierto color y tipo
-        if (cardRepository.findByClientAndColorAndType(authorizedClient, cardColor, cardType) != null) {
+        if (cardRepository.findByClientAndColorAndType(client, cardColor, cardType) != null) {
             return new ResponseEntity<>("Only one type/color per client", HttpStatus.FORBIDDEN);
         }
 
-        String cardHolder = authorizedClient.getFirstName() + " " + authorizedClient.getLastName();
+
+        String cardHolder = client.getFirstName() + " " + client.getLastName();
         //--PROBLEMA-- Quiero obtener nombre y apellido del client, pero no estoy pudiendo
         Card newCard = new Card(
                 cardHolder,
@@ -57,20 +58,14 @@ public class CardServiceImpl implements CardService {
                 LocalDate.now(),
                 LocalDate.now().plusYears(5));
 
-        authorizedClient.addCard(newCard);
+
+        client.addCard(newCard);
         cardRepository.save(newCard);
+
 
         return new ResponseEntity<>("New card created", HttpStatus.CREATED);
 
 
-    }
-
-    @Override
-    public Set<ClientDTO> getClientsDTO() {
-        return clientRepository.findAll()
-                .stream()
-                .map(client -> new ClientDTO(client))
-                .collect(toSet());
     }
 
 

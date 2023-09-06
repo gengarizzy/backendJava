@@ -9,10 +9,13 @@ import com.mindhub.homebanking.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,8 +29,36 @@ public class AccountServiceImpl implements AccountService {
     private ClientRepository clientRepository;
 
     @Override
-    public ResponseEntity<Object> createAccount(Client authorizedClient) {
-        if (authorizedClient.getAccounts().size() >= 3) {
+    public void saveAccount(Account account) {
+        accountRepository.save(account);
+    }
+
+    @Override
+    public ResponseEntity<AccountDTO> getAccountById(Long id) {
+        Optional<Account> account = accountRepository.findById(id);
+        return account.map(AccountDTO::new).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<Set<AccountDTO>> getClientAccounts(Authentication authentication) {
+        Client client = clientRepository.findByEmail(authentication.getName());
+
+        if (client != null) {
+            Set<AccountDTO> accountDTO = client.getAccounts()
+                    .stream()
+                    .map(AccountDTO::new)
+                    .collect(Collectors.toSet());
+            return ResponseEntity.ok(accountDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> createAccount(Authentication authentication) {
+        Client client = clientRepository.findByEmail(authentication.getName());
+
+        if (client.getAccounts().size() >= 3) {
             return new ResponseEntity<>("No puedes tener más de 3 cuentas", HttpStatus.FORBIDDEN);
         }
 
@@ -37,11 +68,15 @@ public class AccountServiceImpl implements AccountService {
         Account accountNew = new Account(newAccountDate, newAccountBalance);
 
         accountRepository.save(accountNew);
-        authorizedClient.addAccount(accountNew);
-        clientRepository.save(authorizedClient);
+        client.addAccount(accountNew);
+        clientRepository.save(client);
 
         return new ResponseEntity<>("Cuenta agregada al cliente", HttpStatus.CREATED);
     }
+
+
+
+
 
 
     //Este metodo recibo una account especifica mediante ID
@@ -52,13 +87,23 @@ public class AccountServiceImpl implements AccountService {
                 .orElse(null);
     }
 
+
+
+
     //Este metodo recibe todas las accounts
     @Override
-    public Set<AccountDTO> getAccountDTO() {
+    public Set<AccountDTO> getAllAccountsDTO() {
         return accountRepository.findAll()
                 .stream()
                 .map(AccountDTO::new)
                 .collect(Collectors.toSet());
+    }
+
+
+    //TASK 9, necesito un metodo de service para encontrar cuenta por numero
+    @Override
+    public Account findByNumber(String destinationAccountNumber) {
+        return accountRepository.findByNumber(destinationAccountNumber);
     }
 
 

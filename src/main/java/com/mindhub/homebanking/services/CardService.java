@@ -15,5 +15,5 @@ public interface CardService {
                                        @RequestParam CardType cardType,
                                        Authentication authentication );
 
-    Set<ClientDTO> getClientsDTO();
+
 }

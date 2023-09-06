@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.services;
 
 import com.mindhub.homebanking.DTO.ClientDTO;
+import com.mindhub.homebanking.models.Client;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,16 @@ public interface ClientService {
             @RequestParam String firstName, @RequestParam String lastName,
             @RequestParam String email, @RequestParam String password);
 
-    Set<ClientDTO> getClientsDTO();
+
+    Client findByEmail(String email);
+
+    void saveClient(Client client);
+
+
+
+
+
+    Set<ClientDTO> getAllClientsDTO();
 
     ClientDTO getClientDTO(@PathVariable Long id);
 

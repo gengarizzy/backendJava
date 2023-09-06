@@ -26,17 +26,21 @@ public class ClientLoanDTO {
     public Long getId() {
         return id;
     }
+
+
+    public Long getLoanId() {
+        return loanId;
+    }
     public String getName() {
         return name;
     }
     public Double getAmount() {
         return amount;
     }
+
     public int getPayments() {
         return payments;
     }
 
-    public Long getLoanId() {
-        return loanId;
-    }
+
 }
