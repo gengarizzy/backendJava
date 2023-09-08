@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.configurations;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +35,7 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
             Client client = clientRepository.findByEmail(inputEmail);
 
-                    //Simplifico verificando que estoy usando el email del admin
+                    //Reviso que el cliente exista
                     if (client != null) {
 
                         if (inputEmail.equals("admin@admin.com")){
@@ -45,6 +46,7 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
                                     AuthorityUtils.createAuthorityList("CLIENT"));
                         }
                     }
+
 
         else {
             //si no existe el cliente asociado al mail, se da aviso de que no se conoce usuario para ese mail

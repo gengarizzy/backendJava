@@ -22,7 +22,7 @@ Vue.createApp({
             axios.post('/api/login', `email=${this.email}&password=${this.password}`, config)
                 .then(response => window.location.href = "/web/accounts.html")
                 .catch(() => {
-                    this.errorMsg = "Sign in failed, check the information"
+                    this.errorMsg = "User or email are incorrect. Please check"
                     this.errorToats.show();
                 })
         },
