@@ -54,6 +54,14 @@ public class TransactionController {
         //monto, descripcion y cuentas de origen/destino
 
 
+        // Validar que los parametros no sean nulos o vacios
+        if (fromAccountNumber == null || fromAccountNumber.isBlank() ||
+                toAccountNumber == null || toAccountNumber.isBlank() ||
+                amount == null || amount <= 0 ||
+                description == null || description.isBlank()) {
+            return new ResponseEntity<>("Invalid parameters", HttpStatus.BAD_REQUEST);
+        }
+
 
         //INSTANCIO OBJETOS DE SUS RESPECTIVAS CLASES PARA REFERIRME AL CLIENTE AUTENTICADO Y LAS CUENTAS ORIGEN/DESTINO
         Client authorizedClient = clientService.findByEmail(authentication.getName());
@@ -95,6 +103,17 @@ public class TransactionController {
             return new ResponseEntity<>("No destination account selected", HttpStatus.FORBIDDEN);
         }
 
+        //Verificacion de monto, no tiene sentido transferir 0 unidades de moneda
+        if(amount==0){
+            return new ResponseEntity<>("You must indicate an amount", HttpStatus.FORBIDDEN);
+        }
+
+        //Vefico que el monto no sea negativo
+        if(amount<0){
+            return new ResponseEntity<>("Amount can't be negative", HttpStatus.FORBIDDEN);
+        }
+
+
 
         //Verificar que la cuenta de origen tenga el monto disponible.
         if (accountService.findByNumber(fromAccountNumber).getBalance() < amount) {
@@ -108,10 +127,7 @@ public class TransactionController {
             return new ResponseEntity<>("You must indicate a description", HttpStatus.FORBIDDEN);
 
         }
-        //Verificacion de monto, no tiene sentido transferir 0 unidades de moneda
-        if(amount==0){
-            return new ResponseEntity<>("You must indicate an amount", HttpStatus.FORBIDDEN);
-        }
+
 
         //PASADAS LAS VERIFICACIONES
 
