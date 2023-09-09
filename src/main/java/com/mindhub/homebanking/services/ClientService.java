@@ -11,18 +11,10 @@ import java.util.Set;
 
 public interface ClientService {
 
-    ResponseEntity<Object> registerNewClient(
-            @RequestParam String firstName, @RequestParam String lastName,
-            @RequestParam String email, @RequestParam String password);
-
 
     Client findByEmail(String email);
 
     void saveClient(Client client);
-
-
-
-
 
     Set<ClientDTO> getAllClientsDTO();
 

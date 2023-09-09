@@ -45,12 +45,8 @@ public class Card {
             // Genera un número aleatorio de 16 dígitos para el número de cuenta, hecho
             //con el prefijo 8666 y 3 bloques de 4 numeros aleatorio
             long randomNumber1 = generateRandomNumber(4);
-            long randomNumber2 = generateRandomNumber(4);
-            long randomNumber3 = generateRandomNumber(4);
-            number = "8666" + " " + String.format("%04d", randomNumber1) + " " +
-                    String.format("%04d", randomNumber2)+ " " +
-                    String.format("%04d", randomNumber3);
-            //Uso el prefijo 8666 para referirme a Mindhub, y le agrego 3 bloques de 4 numeros aleatorios separados
+            number = "8666" + " " + String.format("%04d", randomNumber1);
+            //Uso el prefijo 8666 para referirme a Mindhub, y le agrego 1 bloques de 4 numeros aleatorios separados
             //por un espacio
 
         }

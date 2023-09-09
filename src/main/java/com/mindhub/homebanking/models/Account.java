@@ -44,7 +44,7 @@ public class Account {
     @PrePersist
     public void generateAccountNumber() {
         if (number == null) {
-            number = "VIN-" + String.format("%06d", accountCounter);
+            number = "VIN-" + String.format("%03d", accountCounter);
             accountCounter++;
         }
     }

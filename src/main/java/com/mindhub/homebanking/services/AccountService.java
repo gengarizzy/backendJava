@@ -20,9 +20,6 @@ public interface AccountService {
     ResponseEntity<Set<AccountDTO>> getClientAccounts(Authentication authentication);
 
 
-    ResponseEntity<Object> createAccount(Authentication authentication);
-
-
     AccountDTO getAccountDTO(@PathVariable Long id);
 
     Set<AccountDTO> getAllAccountsDTO();

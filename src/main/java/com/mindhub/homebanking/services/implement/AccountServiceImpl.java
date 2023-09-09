@@ -59,27 +59,6 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public ResponseEntity<Object> createAccount(Authentication authentication) {
-        Client client = clientRepository.findByEmail(authentication.getName());
-
-        if (client.getAccounts().size() >= 3) {
-            return new ResponseEntity<>("No puedes tener más de 3 cuentas", HttpStatus.FORBIDDEN);
-        }
-
-        LocalDate newAccountDate = LocalDate.now();
-        Double newAccountBalance = 0.0;
-
-        Account accountNew = new Account(newAccountDate, newAccountBalance);
-
-        accountRepository.save(accountNew);
-        client.addAccount(accountNew);
-        clientRepository.save(client);
-
-        return new ResponseEntity<>("Cuenta agregada al cliente", HttpStatus.CREATED);
-    }
-
-
 
 
 
@@ -91,8 +70,6 @@ public class AccountServiceImpl implements AccountService {
                 .map(AccountDTO::new)
                 .orElse(null);
     }
-
-
 
 
     //Este metodo recibe todas las accounts

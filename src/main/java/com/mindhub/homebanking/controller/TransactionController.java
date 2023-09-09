@@ -34,8 +34,6 @@ public class TransactionController {
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    ClientRepository clientRepository;
 
 
 
