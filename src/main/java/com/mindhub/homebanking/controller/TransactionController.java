@@ -3,9 +3,6 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.models.TransactionType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.repositories.TransactionRepository;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
 import com.mindhub.homebanking.services.TransactionService;
@@ -46,7 +43,7 @@ public class TransactionController {
             @RequestParam String fromAccountNumber,
             @RequestParam String toAccountNumber
 
-            ) {
+    ) {
 
         //createNewTransaction necesita de un usuario autenticado,
         //monto, descripcion y cuentas de origen/destino
@@ -132,6 +129,7 @@ public class TransactionController {
 
 
 
+
         //Se deben crear dos transacciones,
         // una con el tipo de transacción “DEBIT” asociada a la cuenta de origen
         Transaction transactionDestination = new Transaction(TransactionType.CREDIT,
@@ -150,8 +148,9 @@ public class TransactionController {
 
 
         // crear las transacciones asociandolas a las cuentas correspondientes
-        originAccount.addTransaction(transactionOrigin);
         destinationAccount.addTransaction(transactionDestination);
+        originAccount.addTransaction(transactionOrigin);
+
 
         //por último guardarlas en el repositorio de transacciones
         transactionService.saveNewTransaction(transactionDestination);
@@ -183,12 +182,3 @@ public class TransactionController {
     }
 
 }
-
-
-
-
-
-
-
-
-

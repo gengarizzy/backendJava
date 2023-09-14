@@ -11,4 +11,5 @@ public interface LoanRepository extends JpaRepository<Loan,Long> {
    Loan findLoanById(Long id);
 
 
+
 }

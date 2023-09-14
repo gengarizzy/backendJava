@@ -34,6 +34,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account createNewDefaultAccount() {
+        LocalDate newAccountDate = LocalDate.now();
+        Double newAccountBalance = 0.0;
+        return new Account(newAccountDate, newAccountBalance);
+    }
+
+    @Override
     public Account findByNumberAndClient(String number, Client client) {
         return accountRepository.findByNumberAndClient(number, client);
     }

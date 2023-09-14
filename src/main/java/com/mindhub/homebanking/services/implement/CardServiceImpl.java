@@ -28,12 +28,36 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardRepository cardRepository;
 
+    //task11
+    @Override
+    public void deleteCard(Card card) {
+        cardRepository.delete(card);
+    }
 
+
+
+
+
+
+
+
+    //
 
     @Override
     public void saveNewCard(Card card) {
         cardRepository.save(card);
     }
+
+
+
+    @Override
+    public Card createNewCard(String cardHolder, CardColor cardColor, CardType cardType) {
+        LocalDate fromDate = LocalDate.now();
+        LocalDate thruDate = fromDate.plusYears(5);
+        return new Card(cardHolder, cardType, cardColor, fromDate, thruDate);
+    }
+
+
 
     @Override
     public boolean existsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType) {

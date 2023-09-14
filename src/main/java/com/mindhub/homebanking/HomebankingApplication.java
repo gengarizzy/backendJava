@@ -68,12 +68,11 @@ public class HomebankingApplication {
 //			Transaction transaction8 = new Transaction(TransactionType.DEBIT, 9500.0, "DEPOSIT", LocalDateTime.now());
 //
 //
-//
-//			Loan loanMortgage = new Loan(LoanType.MORTGAGE.name(), 500000.0, List.of(12,24,36,48,60)); //Hasta 60 cuotas
-//			Loan loanPersonal1 = new Loan(LoanType.PERSONAL.name(), 50000.0, List.of(6,12,24)); //24 cuotas
-//			Loan loanPersonal2 = new Loan(LoanType.PERSONAL.name(), 100000.0, List.of(6,12,24)); //24 cuotas
-//			Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36)); //36 cuotas
-//
+////
+//				Loan loanMortgage = new Loan(LoanType.MORTGAGE.name(), 500000.0, List.of(12,24,36,48,60)); //Hasta 60 cuotas
+//				Loan loanPersonal = new Loan(LoanType.PERSONAL.name(), 100000.0, List.of(6,12,24)); //24 cuotas
+//				Loan loanAutomotive = new Loan(LoanType.AUTOMOTIVE.name(), 300000.0, List.of(6,12,24,36)); //36 cuotas
+////
 //
 //
 //
@@ -86,7 +85,7 @@ public class HomebankingApplication {
 //			account4.addTransaction(transaction7);
 //			account4.addTransaction(transaction8);
 //
-//
+
 //			client1.addAccount(account1); //ASOCIO LAS CUENTAS AL CLIENTE
 //			client1.addAccount(account2);
 //			client2.addAccount(account3);
@@ -108,7 +107,7 @@ public class HomebankingApplication {
 //			//fuera del constructor, como se me indico en la correccion de la task5
 //			clientLoan1.addClient(client1);
 //			clientLoan1.addLoan(loanMortgage);
-//
+////
 //			clientLoan2.addClient(client1);
 //			clientLoan2.addLoan(loanPersonal1);
 //
@@ -165,10 +164,9 @@ public class HomebankingApplication {
 //			transactionRepository.save(transaction7);
 //			transactionRepository.save(transaction8);
 //
-//			loanRepository.save(loanMortgage);
-//			loanRepository.save(loanPersonal1);
-//			loanRepository.save(loanPersonal2);
-//			loanRepository.save(loanAutomotive);
+//						loanRepository.save(loanMortgage);
+//						loanRepository.save(loanPersonal);
+//						loanRepository.save(loanAutomotive);
 //
 //			clientLoanRepository.save(clientLoan1);
 //			clientLoanRepository.save(clientLoan2);

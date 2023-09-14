@@ -15,6 +15,9 @@ public interface CardService {
 
     void saveNewCard(Card card);
 
+    void deleteCard(Card card);
+
+    Card createNewCard(String cardHolder, CardColor cardColor, CardType cardType);
 
     //SOLUCION: tenia que usar existsBy debido a una convencion en Spring
     boolean existsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType);

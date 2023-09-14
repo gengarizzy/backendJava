@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class AccountController {
 
 
     //CREACION DE CUENTAS
+    @Transactional //Agrego Transactional porque quiero revertir la creacion en caso de error
     @PostMapping("/clients/current/accounts")
     public ResponseEntity<Object> createAccount(Authentication authentication) {
 
@@ -55,18 +57,35 @@ public class AccountController {
             return new ResponseEntity<>("No puedes tener más de 3 cuentas", HttpStatus.FORBIDDEN);
         }
 
-        LocalDate newAccountDate = LocalDate.now();
-        Double newAccountBalance = 0.0;
 
-        Account accountNew = new Account(newAccountDate, newAccountBalance);
 
-        accountService.saveAccount(accountNew);
-        client.addAccount(accountNew);
+        Account newAccount = accountService.createNewDefaultAccount();
+        //ESTE METODO REEMPLAZA AL CODIGO COMENTADO DEBAJO. De esa manera, paso la logica al servicio, la cual
+        //utilizo mediante un metodo con un nombre autodescriptivo
+        //crear una nueva cuenta por defecto, refiriendose a un balance 0 y fecha del dia
+
+        //Este metodo solo se encarga de una cosa --> crear una nueva cuenta por defecto
+
+//        LocalDate newAccountDate = LocalDate.now();
+//        Double newAccountBalance = 0.0;
+//        Account accountNew = new Account(newAccountDate, newAccountBalance);
+
+
+        //Aca no puedo simplificar mas, no puedo tener un metodo que guarde la cuenta, la agregue al cliente
+        //y guarde el cliente con esa modificacion, porque estaria violando el Single Responsability Principle
+        accountService.saveAccount(newAccount);
+        client.addAccount(newAccount);
         clientService.saveClient(client);
+        //DUDA: ese enfoque es correcto?
+        //MOTIVO: Si bien violaria el SRP, son acciones destinadas a una cosa (guardar la cuenta a un cliente),
+        //Quizas podria pasarlo a un metodo privado en esta clase (para modificarlo en caso necesario), por ejemplo,
+        // private void saveAccountToClient();
 
         return new ResponseEntity<>("Cuenta agregada al cliente", HttpStatus.CREATED);
 
     }
+
+
 
 
 }

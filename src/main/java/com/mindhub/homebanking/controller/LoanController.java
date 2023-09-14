@@ -66,7 +66,11 @@ public class LoanController {
         //Verificar que los datos sean correctos, es decir no estén vacíos.
         //Recibe un cliente autenticado y solicita mediante @RequestBody las propiedades especificadas
 
-        //verifico cliente autenticado
+        if (authentication == null) {
+            return new ResponseEntity<>("Authenticated user required", HttpStatus.BAD_REQUEST);
+
+        }        //verifico cliente autenticado
+
         Client client = clientService.findByEmail(authentication.getName());
 
 

@@ -10,6 +10,13 @@ Vue.createApp({
         }
     },
     methods: {
+
+         deleteCard :function(){
+         axios.delete(("/api/clients/current"))
+
+         },
+
+
         getData: function () {
             axios.get("/api/clients/current")
                 .then((response) => {

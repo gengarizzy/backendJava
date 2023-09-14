@@ -13,6 +13,8 @@ public interface AccountService {
 
     void saveAccount(Account account);
 
+    Account createNewDefaultAccount();
+
     Account findByNumberAndClient(String number, Client client);
 
     ResponseEntity<AccountDTO> getAccountById(Long id);

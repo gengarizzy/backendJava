@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +31,24 @@ public class CardController {
 
 
 
+    @Transactional //Uso Transactional para deshacer la creacion si algo falla
     @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> createCards(@RequestParam CardColor cardColor,
                                               @RequestParam CardType cardType,
                                               Authentication authentication ) {
+        //VALIDACIONES DE LOS ARGUMENTOS
+
+        if (cardColor == null || cardType == null) {
+            return new ResponseEntity<>("CardColor and CardType are required", HttpStatus.BAD_REQUEST);
+        }
+
+        if (authentication == null) {
+            return new ResponseEntity<>("Authenticated user required", HttpStatus.BAD_REQUEST);
+
+        }
 
         //Obtengo el cliente mediante findByEmail del service
-        Client client = clientService.findByEmail(authentication.getName());
-
-
-
+        Client client = getClientFromAuthentication(authentication);
 
 
         //PUNTO MARCADO EN LA CORRECION DE TASK 7. IMPLEMENTO UN IF CON UN BOOLEAN
@@ -50,15 +59,11 @@ public class CardController {
         }
 
 
-        String cardHolder = client.getFirstName() + " " + client.getLastName();
-        //--PROBLEMA-- Quiero obtener nombre y apellido del client, pero no estoy pudiendo
-        Card newCard = new Card(
-                cardHolder,
-                cardType,
-                cardColor,
-                LocalDate.now(),
-                LocalDate.now().plusYears(5));
 
+
+        String cardHolder = client.getFirstName() + " " + client.getLastName();
+        //Uso un metodo de CardService para crear la nueva Card con los parametros provenientes de esta clase
+        Card newCard = cardService.createNewCard(cardHolder, cardColor, cardType);
 
         client.addCard(newCard);
         cardService.saveNewCard(newCard);
@@ -67,4 +72,14 @@ public class CardController {
         return new ResponseEntity<>("New card created", HttpStatus.CREATED);
 
     }
+
+    // Función privada para obtener el cliente desde la autenticación
+    private Client getClientFromAuthentication(Authentication authentication) {
+        String email = authentication.getName();
+        return clientService.findByEmail(email);
+    }
+
+    //Creo una funcion que me devuelva el nombre completo del cliente autenticado, para facilitar
+    //la lectura del codigo de la funcion principal
+
 }
