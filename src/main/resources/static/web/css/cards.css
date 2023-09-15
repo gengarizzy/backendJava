@@ -5,6 +5,17 @@
 	color: red !important;
 }
 
+.expired-card-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+    color: black;
+}
+
 .plastic-card {
 	width: 320px;
 	height: 190px;
