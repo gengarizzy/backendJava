@@ -91,7 +91,7 @@ public class CardController {
 
             cardService.deleteCard(client, id);
 
-            return new ResponseEntity<>("Delete successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Card deleted successfully", HttpStatus.OK);
 
         }catch(EntityNotFoundException entityNotFoundException){
 

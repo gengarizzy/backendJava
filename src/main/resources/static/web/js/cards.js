@@ -49,10 +49,18 @@ Vue.createApp({
             return thruDateObj < DateObj;
         },
 
-                 deleteCard :function(){
-                 axios.delete(("/api/clients/current"))
-
-                 },
+         deleteCards: function() {
+                axios.delete("/api/clients/current/cards")
+                    .then(response => {
+                        // Manejar la respuesta del servidor después de eliminar las tarjetas.
+                        // Por ejemplo, puedes mostrar un mensaje de éxito o actualizar la lista de tarjetas.
+                        console.log(response.data); // Mensaje de éxito del servidor
+                    })
+                    .catch(error => {
+                        // Manejar errores en caso de que la eliminación falle.
+                        console.error(error);
+                    });
+            }
 
     },
     mounted: function () {

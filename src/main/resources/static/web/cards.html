@@ -72,6 +72,9 @@
                     <ul class="nav nav-pills flex-column mb-auto">
                         <button class="btn btn-danger img-fluid" v-on:click="signOut">Sign out</button>
                     </ul>
+
+
+
                 </div>
             </div>
             <div class="col">
@@ -111,13 +114,14 @@
                                 <span class="plastic-card__label">Expires</span>
                                 <p class="plastic-card__info">{{ formatDate(card.thruDate) }}</p>
                             </div>
+
                         </div>
 
                         <div
                                 v-bind:class="['plastic-card__back',
                                  'plastic-card__part',
                                  isCardExpired(card) ? 'expired-plastic-card' : card.color.toLowerCase() + '-plastic-card']">
-    ]">
+
                             <div class="plastic-card__black-line"></div>
                             <div class="plastic-card__back-content">
                                 <div class="expired-card-text" v-if="isCardExpired(card)">
@@ -131,6 +135,7 @@
                                 </div>
                                 <img class="plastic-card__back-logo plastic-card__logo" src="img/Mindhub-logo.png">
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -164,6 +169,7 @@
                                 <p class="plastic-card__info">{{ formatDate(card.thruDate) }}</p>
                             </div>
 
+
                         </div>
 
                         <div
@@ -182,6 +188,7 @@
                                 </div>
                                 <img class="plastic-card__back-logo plastic-card__logo" src="img/Mindhub-logo.png">
                             </div>
+
                         </div>
                     </div>
                 </div>
