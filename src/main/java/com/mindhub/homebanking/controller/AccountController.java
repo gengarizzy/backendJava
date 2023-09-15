@@ -87,5 +87,26 @@ public class AccountController {
 
 
 
+    @Transactional
+    @DeleteMapping("/clients/current/accounts/{id}")
+    public ResponseEntity<?> deleteAccount(@PathVariable Long id, Authentication authentication){
+
+        try{
+            accountService.deleteAccount(authentication, id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception exception){
+
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+
+        }
+
+
+
+    }
+
+
+
 
 }

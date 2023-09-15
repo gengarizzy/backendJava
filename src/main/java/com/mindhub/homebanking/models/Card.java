@@ -33,33 +33,6 @@ public class Card {
     private Account account;
 
 
-    @PrePersist
-    public void generateAccountCvvAndNumber() {
-        if (cvv == null && number == null) {
-            Random random = new Random();
-
-            // Genera un número aleatorio entre 0 y 999 para el CVV
-            int randomCvv = random.nextInt(1000);
-            cvv = String.format("%03d", randomCvv);
-
-            // Genera un número aleatorio de 16 dígitos para el número de cuenta, hecho
-            //con el prefijo 8666 y 3 bloques de 4 numeros aleatorio
-            long randomNumber1 = generateRandomNumber(4);
-            number = "8666" + " " + String.format("%04d", randomNumber1);
-            //Uso el prefijo 8666 para referirme a Mindhub, y le agrego 1 bloques de 4 numeros aleatorios separados
-            //por un espacio
-
-        }
-    }
-
-    //Genero una funcion para generar numeros POSITIVOS aleatorios, la que uso para generar el numero de tarjeta
-    //Hago uso de Math.abs() para que los numeros aleatorios generados sean positivos
-    private long generateRandomNumber(int digits) {
-        Random random = new Random();
-        long min = (long) Math.pow(10, digits - 1);
-        long max = (long) Math.pow(10, digits) - 1;
-        return Math.abs(min + random.nextLong() % (max - min + 1));
-    }
 
     // Resto de tu clase y métodos
 
@@ -81,10 +54,12 @@ public class Card {
 public Card() {
     }
 
-    public Card(String cardHolder, CardType type, CardColor color,   LocalDate fromDate, LocalDate thruDate) {
+    public Card(String cardHolder, CardType type, CardColor color, String number, String cvv,  LocalDate fromDate, LocalDate thruDate) {
         this.cardHolder = cardHolder;
         this.type = type;
         this.color = color;
+        this.number = number;
+        this.cvv = cvv;
         this.fromDate = fromDate;
         this.thruDate = thruDate;
     }

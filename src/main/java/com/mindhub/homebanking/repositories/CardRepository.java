@@ -4,6 +4,7 @@ import com.mindhub.homebanking.models.CardColor;
 import com.mindhub.homebanking.models.CardType;
 import com.mindhub.homebanking.models.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     //SOLUCION: tenia que usar existsBy debido a una convencion en Spring
     boolean existsByClientAndColorAndType(Client client, CardColor cardColor, CardType cardType);
 
-
+    List<Card> findCardsByClient(Client client);
 }

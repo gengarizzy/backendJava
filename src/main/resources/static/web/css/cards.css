@@ -1,3 +1,10 @@
+.expired-plastic-card {
+    /* Estilos para tarjetas expiradas */
+    opacity: 0.5;
+	background: red !important;
+	color: red !important;
+}
+
 .plastic-card {
 	width: 320px;
 	height: 190px;

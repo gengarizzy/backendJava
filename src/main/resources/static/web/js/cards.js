@@ -11,10 +11,9 @@ Vue.createApp({
     },
     methods: {
 
-         deleteCard :function(){
-         axios.delete(("/api/clients/current"))
 
-         },
+
+
 
 
         getData: function () {
@@ -24,6 +23,8 @@ Vue.createApp({
                     this.clientInfo = response.data;
                     this.creditCards = this.clientInfo.cards.filter(card => card.type == "CREDIT");
                     this.debitCards = this.clientInfo.cards.filter(card => card.type == "DEBIT");
+
+
                 })
                 .catch((error) => {
                     this.errorMsg = "Error getting data";
@@ -41,6 +42,18 @@ Vue.createApp({
                     this.errorToats.show();
                 })
         },
+
+        isCardExpired: function(card) {
+            const thruDateObj = new Date(card.thruDate);
+            const DateObj = new Date();
+            return thruDateObj < DateObj;
+        },
+
+                 deleteCard :function(){
+                 axios.delete(("/api/clients/current"))
+
+                 },
+
     },
     mounted: function () {
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));

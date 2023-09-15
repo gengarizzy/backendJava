@@ -10,10 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 
 @RestController
@@ -81,5 +80,27 @@ public class CardController {
 
     //Creo una funcion que me devuelva el nombre completo del cliente autenticado, para facilitar
     //la lectura del codigo de la funcion principal
+
+
+    @Transactional
+    @DeleteMapping("/clients/current/cards/{id}")
+    public ResponseEntity<?> deleteCard(@PathVariable Long id, Authentication authentication){
+
+        Client client = clientService.findByEmail(authentication.getName());
+        try{
+
+            cardService.deleteCard(client, id);
+
+            return new ResponseEntity<>("Delete successfully", HttpStatus.OK);
+
+        }catch(EntityNotFoundException entityNotFoundException){
+
+            return new ResponseEntity<>(entityNotFoundException.getMessage(), HttpStatus.FORBIDDEN);
+
+        }
+
+    }
+
+
 
 }
