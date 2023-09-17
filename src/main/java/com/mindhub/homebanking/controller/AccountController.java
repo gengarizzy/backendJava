@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PostUpdate;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -88,9 +89,11 @@ public class AccountController {
 
 
     @Transactional
-    @DeleteMapping("/clients/current/accounts/{id}")
+    @PostMapping("/clients/current/accounts/{id}")
     public ResponseEntity<?> deleteAccount(@PathVariable Long id, Authentication authentication){
 
+
+        //Este controller llama la service que tiene la logica para cambiar el estado de la account
         try{
             accountService.deleteAccount(authentication, id);
 
@@ -98,7 +101,7 @@ public class AccountController {
         }
         catch (Exception exception){
 
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("deleteAccount fail (ACCOUNT CONTROLLER)", HttpStatus.FORBIDDEN);
 
         }
 

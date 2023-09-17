@@ -13,12 +13,16 @@ public class AccountDTO {
 
     private Set<TransactionDTO> transactions;
 
+    private boolean isEnabled;
+
+
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.number = account.getNumber();
         this.date = account.getDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions().stream().map(TransactionDTO::new).collect(Collectors.toSet());
+        this.isEnabled = account.isEnabled();
     }
 
 
@@ -35,6 +39,11 @@ public class AccountDTO {
     public double getBalance() {
         return balance;
     }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
     public Set<TransactionDTO> getTransactions() {
         return transactions;
     }

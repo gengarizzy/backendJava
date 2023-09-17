@@ -18,6 +18,9 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
 //    Transaction findByClient(Client client);
 
+    void deleteAllByAccount(Account account);
+
+
 
 
 

@@ -73,13 +73,17 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col">
                     <div class="row">
+
                         <div class="col">
                             <h1 class="display-1">Account details</h1>
                         </div>
                     </div>
                     <div class="row mt-3">
+
+
                         <div class="col">
                             <h2 class="display-6 account">Account Number: {{ accountInfo.number }} - Balance: ${{
                                 accountInfo.balance }}</h2>
@@ -107,6 +111,14 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <!-- Botón de eliminación de cuenta -->
+                            <button class="btn btn-danger" @click="deleteAccount">Eliminar cuenta</button>
                         </div>
                     </div>
                 </div>

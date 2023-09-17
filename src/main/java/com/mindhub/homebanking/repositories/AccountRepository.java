@@ -20,7 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findByNumber(String number);
 
-//    List<Transaction> findTransactionsByAccount(Account account);
+    List<Transaction> findTransactionsById(Long id);
 
 
 

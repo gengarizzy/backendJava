@@ -37,7 +37,9 @@ class WebAuthorization extends WebSecurityConfigurerAdapter {
 
 
 
-                .antMatchers(HttpMethod.GET, "/api/clients/current/**").hasAnyAuthority("CLIENT", "ADMIN")
+
+//Esta linea deberia darme permisos para los metodos, el forbidden sera relacionado a esto?
+                .antMatchers("/api/clients/current/**").hasAnyAuthority("CLIENT", "ADMIN")
 
                 //TENGO UN PROBLEMA ACA. EL METODO getData de transfers.js falla al solicitar los datos del usuario
                 //axios.get("/api/clients/current/accounts")

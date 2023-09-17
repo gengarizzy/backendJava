@@ -16,7 +16,8 @@ public interface AccountService {
 
     Account createNewDefaultAccount();
 
-    void deleteAccount(Authentication authentication, Long id) throws EntityNotFoundException, Exception;
+
+    void deleteAccount(Authentication authentication, Long id) throws Exception;
 
     Account findByNumberAndClient(String number, Client client);
 

@@ -15,6 +15,10 @@ public class Account {
     private LocalDate date;
     private double balance;
 
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
+
     private static int accountCounter = 1; //Inicio mi contador para asignar un numero de cuenta automatico
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="client_id")
@@ -24,6 +28,8 @@ public class Account {
 
 
     public Account() {
+        this.isEnabled = true;
+
     } //CONSTRUCTOR VACIO
 
 
@@ -32,6 +38,8 @@ public class Account {
     public Account( LocalDate date, double balance) {
         this.date = date;
         this.balance = balance;
+        this.isEnabled = true;
+
 
     } //CONSTRUCTOR CONSIDERANDO EL NUMERO DE CUENTA, FECHA DE CREACION Y EL SALDO
 
@@ -108,8 +116,18 @@ public class Account {
 
 
 
+    //TASK 11, agrego los getters/setters para conocer el estado de la cuenta
 
-    //TO STRING
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabledStatus) {
+        isEnabled = enabledStatus;
+    }
+
+//TO STRING
 
 
     @Override
@@ -120,6 +138,7 @@ public class Account {
                 ", date=" + date +
                 ", balance=" + balance +
                 ", client=" + client +
+                ", isEnabled=" + isEnabled +
                 ", transactions=" + transactions +
                 '}';
     }

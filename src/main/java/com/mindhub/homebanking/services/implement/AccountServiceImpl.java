@@ -11,6 +11,8 @@ import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +37,16 @@ public class AccountServiceImpl implements AccountService {
     private ClientRepository clientRepository;
 
     @Autowired
+    private ClientService clientService;
+
+    @Autowired
     private CardService cardService;
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @Autowired
     private CardRepository cardRepository;
@@ -111,59 +119,86 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByNumber(destinationAccountNumber);
     }
 
-    @Override
-    public void deleteAccount(Authentication authentication, Long id) throws EntityNotFoundException, Exception {
 
-        Client client = clientRepository.findByEmail(authentication.getName());
+    @Override //SEGUNDO INTENTO
+    public void deleteAccount(Authentication authentication, Long id) throws Exception {
+
+
+        //Pruebo la primera parte del mismo modo que el metodo comentado debajo de este
+        Client client = clientService.findByEmail(authentication.getName());
 
         Account clientAccount = client.getAccounts()
-                .stream().filter(account -> account.getId() == id).findAny().orElse(null);
+                .stream().filter(account -> account.getId() == id) //obtengo el id con el getter
+                .findAny().orElse(null);
+        //Asigno la instancia clientAccount a la account que tenga el id deseado
 
 
-
+        //verificaciones de nulidad y balance
         if(clientAccount == null){
 
-            throw new EntityNotFoundException("Account not found");
+            throw new EntityNotFoundException("Account not found (SERVICE ERROR)");
 
         } else if(clientAccount.getBalance() > 0){
 
-            throw new Exception("You must withdraw your account amount to allow deleting it ");
+            throw new Exception("Your account balance must be zero (SERVICE ERROR)");
 
         }
+        //Ahora en vez de eliminar, puedo intentar cambiar un atributo para permitir o no el rendering
+        //Puedo definir un metodo en la clase Account para cambiarle una propiedad
+        clientAccount.setEnabled(false);
+        //Ahora la cuenta estaria en un estado de DESHABILITADO.
+        //Puede que sea una solucion mas eficiente, porque no se eliminaria el historial de la misma
+        //Y se podria revertir facilmente en caso de error o necesidad. Deberia buscar la manera de
+        //poder hacerlo unicamente con un permiso especial
 
-
-        // Obtener todas las transacciones del cliente
-//        List<Transaction> clientTransactions = accountRepository.findTransactionsByAccount(clientAccount);
-
-//        // Eliminar todas las transacciones del cliente
-//        for (Transaction transaction : clientTransactions) {
-//            transactionRepository.delete(transaction);
-//        }
-
-
-
-
-        // Obtener todas las tarjetas del cliente
-        List<Card> clientCards = cardRepository.findCardsByClient(client);
-
-        // Eliminar todas las transacciones del cliente
-        for (Card card : clientCards) {
-            cardRepository.delete(card);
-        }
-
-
-
-
-
-
-
-        accountRepository.delete(clientAccount);
-
-        clientRepository.save(client);
-
-
+        accountRepository.save(clientAccount);
+        //Guardo la cuenta luego de cambiarle el estado. Ahora depende del rendering
 
     }
+//    @Override
+//    public void deleteAccount(Authentication authentication, Long id) throws EntityNotFoundException, Exception {
+////REVISA PASO A PASO LO QUE SUCEDE
+//
+//
+//        //PRIMERO BUSCO UN CLIENTE AUTENTICADO Y LO ASIGNO A LA INSTANCIA DE NOMBRE client
+//        Client client = clientRepository.findByEmail(authentication.getName());
+//
+//
+//        //Una vez encontrado el client, busco las accounts asociadas al mismo
+//        Account clientAccount = client.getAccounts()
+//                .stream().filter(account -> account.getId() == id).findAny().orElse(null);
+//
+//
+//
+//        //validaciones de account, en caos de que no existan o dispongan de saldo
+//        if(clientAccount == null){
+//
+//            throw new EntityNotFoundException("Accounts not found");
+//
+//        } else if(clientAccount.getBalance() > 0){
+//
+//            throw new Exception("You must withdraw your account amount to allow deleting it ");
+//
+//        }
+//
+//
+//        //Busco las transacciones asociadas a las cuentas, ya que hay que eliminarlas previamente
+//        List<Transaction> transactions = accountRepository.findTransactionsById(clientAccount.getId());
+//        //Elimino las transactions
+//        transactionService.deleteAllByAccount(transactions);
+//
+//        //DEBERIA HACER LO MISMO PARA LOS LOANS
+//
+//
+//
+//
+//        accountRepository.delete(clientAccount);
+//
+//        clientRepository.save(client);
+//
+//
+//
+//    }
 
 
 }

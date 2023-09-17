@@ -34,7 +34,33 @@ Vue.createApp({
                     this.errorToats.show();
                 })
         },
+   deleteAccount: function () {
+
+           const urlParams = new URLSearchParams(window.location.search);
+                      const id = urlParams.get('id');
+
+
+//Se supone que esto va al controller, donde llamo a la logica para cambiar el estado de la cuenta
+//Pero sigo entrando al catch
+           axios.post(`/api/clients/current/accounts/${id}`)
+               .then(response => {
+                   // Manejar la eliminación exitosa, redirigir al usuario o realizar otras acciones necesarias
+                   window.location.href = "/web/accounts.html";
+               })
+
+               //POR QUE NO ENTRO AL .THEN?
+
+
+               .catch(error => {
+                   // Manejar errores en la eliminación de la cuenta
+                   console.error("CATCH CONSOLE ERROR. Error al eliminar la cuenta");
+                   this.errorMsg = "deleteAccount CATCH ! Account deleting error";
+                   this.errorToats.show();
+               });
+       },
+
     },
+
     mounted: function () {
         this.errorToats = new bootstrap.Toast(document.getElementById('danger-toast'));
         this.getData();
